@@ -3,8 +3,7 @@ import Piece from "./Piece";
 import BoardRow from "./BoardRow"
 import '../styling/Board.css'
 
-const BOARD_WIDTH = 6;
-const BOARD_HEIGHT = 6;
+const BOARD_SIZE = 6;
 
 const TEST_PUZZLE = {
     pieces: [
@@ -14,32 +13,93 @@ const TEST_PUZZLE = {
     ]
 };
 
-const initializeEmptyBoard = () => {
+const initializeBoardFromPuzzle = (puzzle) => {
     let board = []
 
-    for (let cols = 0; cols < BOARD_WIDTH; cols++) {
+    for (let cols = 0; cols < BOARD_SIZE; cols++) {
         board.push([]);
 
-        for (let rows = 0; rows < BOARD_HEIGHT; rows++) {
-            board[cols].push({x:cols, y:rows, isOccupied:false});
+        for (let rows = 0; rows < BOARD_SIZE; rows++) {
+            board[cols].push({x:cols, y:rows, isOccupied:false, id:null});
         }
     }
+
+    const markAsOccupied = (board, id, x, y, size, orientation) => {
+        if (orientation == 'HORIZONTAL') {
+            for (let i = 0; i < size; i++) {
+                board[x + i][y].isOccupied = true;
+                board[x + i][y].id = id;
+            }
+        } else {
+            for (let j = 0; j < size; j++) {
+                board[x][y + j].isOccupied = true;
+                board[x][y + j].id = id;
+            }
+        }
+    }
+
+    puzzle.pieces.map(piece => markAsOccupied(board, piece.id, piece.x, piece.y, piece.size, piece.orientation))
 
     return board
 }
 
 const Board = () => {
-    const [boardState, setBoardState] = useState(initializeEmptyBoard());
-
-    const populateBoardFromPuzzle = puzzle => {
-        return puzzle.pieces.map(piece => <Piece key={piece.id} pieceProps={piece} updateCoords={updateOccupiedSpaces} />)
+    const populateBoardFromPuzzle = (puzzle, occupiedSpaces) => {
+        return puzzle.pieces.map(piece => <Piece key={piece.id} pieceProps={piece} occupied={occupiedSpaces} updateCoords={updateOccupiedSpaces} />)
     }
 
-    const updateOccupiedSpaces = () => {
-        
+    const populatePiecesFromOccupiedSpaces = (puzzle, occupiedSpaces) => {
+
     }
 
-    let pieces = populateBoardFromPuzzle(TEST_PUZZLE);
+    const updateOccupiedSpaces = (id, x, y, orientation, size) => {
+        /*
+        const markAsUnoccupied = (element, targetId) => {
+            if (element.id == targetId) {
+                element.isOccupied = false;
+                element.id = null;
+            }
+        }
+
+        setOccupiedSpaces((prevState) => {
+            let newState = prevState;
+
+            newState.forEach(row => row.forEach(element => markAsUnoccupied(element, id)))
+    
+            if (orientation == 'HORIZONTAL') {
+                if (x + size <= BOARD_SIZE) {
+                    for (let i = 1; i < size; i++) {
+                        newState[BOARD_SIZE - i][y].isOccupied = true;
+                        newState[BOARD_SIZE - i][y].id = id;
+                    }
+                } else {
+                    for (let i = 0; i < size; i++) {
+                        newState[x + i][y].isOccupied = true;
+                        newState[x + i][y].id = id;
+                    }
+                }
+            } else {
+                if (y + size <= BOARD_SIZE) {
+                    for (let j = 1; j < size; j++) {
+                        newState[x][BOARD_SIZE - j].isOccupied = true;
+                        newState[x][BOARD_SIZE - j].id = id;
+                    }
+                } else {
+                    for (let j = 0; j < size; j++) {
+                        newState[x][y + j].isOccupied = true;
+                        newState[x][y + j].id = id;
+                    }
+                }
+            }
+
+            return newState;
+        })
+        */
+    }
+
+    const [occupiedSpaces, setOccupiedSpaces] = useState(initializeBoardFromPuzzle(TEST_PUZZLE));
+
+    let pieces = populateBoardFromPuzzle(TEST_PUZZLE, occupiedSpaces);
 
     return (
         <div id='main-board' className='board'>
@@ -48,46 +108,4 @@ const Board = () => {
     )
 }
 
-/*
-const BOARD_WIDTH = 6;
-const BOARD_HEIGHT = 6;
-
-const initializeEmptyBoard = () => {
-    let board = []
-
-    for (let cols = 0; cols < BOARD_WIDTH; cols++) {
-        board.push([]);
-
-        for (let rows = 0; rows < BOARD_HEIGHT; rows++) {
-            board[cols].push({x:cols, y:rows, isOccupied:false});
-        }
-    }
-
-    return board
-}
-
-const Board = () => {
-    const [boardState, setBoardState] = useState(initializeEmptyBoard());
-
-    const updateBoardState = (xCoord, yCoord, isOccupied) => {
-        let newState = boardState;
-        newState[xCoord][yCoord].isOccupied = isOccupied;
-
-        setBoardState(newState);
-    }
-
-    return (
-        <table className='board'>
-            <tbody className='board__tbody'>
-                <BoardRow ids={boardState[0]} updateBoardState={updateBoardState} />
-                <BoardRow ids={boardState[1]} updateBoardState={updateBoardState} />
-                <BoardRow ids={boardState[2]} updateBoardState={updateBoardState} />
-                <BoardRow ids={boardState[3]} updateBoardState={updateBoardState} />
-                <BoardRow ids={boardState[4]} updateBoardState={updateBoardState} />
-                <BoardRow ids={boardState[5]} updateBoardState={updateBoardState} />
-            </tbody>
-        </table>
-    )
-}
-*/
 export default Board

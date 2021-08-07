@@ -66,6 +66,7 @@ const Piece = props => {
             }
         
             //setCurrX(newBin)
+            props.updateCoords(props.pieceProps.id, newBin, currY, props.pieceProps.orientation, props.pieceProps.size)
         } else {
             // Has transforms for both X and Y directions -- X will be 0
             let yTransform = Number(vals[1])
@@ -96,9 +97,9 @@ const Piece = props => {
                     newBin = 0
             }
             
+            //setCurrY(newBin)
+            props.updateCoords(props.pieceProps.id, currX, newBin, props.pieceProps.orientation, props.pieceProps.size)
         }
-
-        //props.updateCoords(props.pieceProps.id, currX, currY);
     }
 
     let currPiece = props.pieceProps.orientation == 'HORIZONTAL' 
