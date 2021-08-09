@@ -4,15 +4,38 @@ import Draggable from 'react-draggable';
 const BOARD_SIZE = 6;
 const SIZE_MOD = 100 / BOARD_SIZE;
 
-const calculateBounds = (id, x, y, h, w) => {
+const AXIS = {
+    x: 'x',
+    y: 'y'
+}
+
+const calculateBoundsFromOtherPiece = (parentBound, currPos, otherPos, otherSize) => {
+
+}
+
+const calculateBounds = (id, x, y, h, w, allPieces, axis) => {
     let boardBoundingRect = document.getElementById('main-board').getBoundingClientRect();
     let tileSize = boardBoundingRect.width / BOARD_SIZE;
 
     let left = parseInt(0 - (x * tileSize));
     let top = parseInt(0 - (y * tileSize));
-    let right = parseInt(boardBoundingRect.width - w);
-    let bottom = parseInt(boardBoundingRect.height - h);
+    let right = parseInt(boardBoundingRect.width - ((w + x) * tileSize));
+    let bottom = parseInt(boardBoundingRect.height - ((h + y) * tileSize));
     
+    allPieces.forEach(otherPiece => {
+        if (id != otherPiece.id) {
+            if (axis == AXIS.x) {
+                if (x >= otherPiece.x && y >= otherPiece.y && y <= otherPiece.y + otherPiece.size) {
+                    left = parseInt(0 - ((x - (otherPiece.x + otherPiece.size)) * tileSize))
+                } else if (x <= otherPiece.x && y >= otherPiece.y && y <= otherPiece.y + otherPiece.size) {
+                    right = parseInt(boardBoundingRect.width - ((w + x + otherPiece.size) * tileSize))
+                }
+            } else if (axis == AXIS.y) {
+
+            }
+        }
+    })
+
     return {
         left: left, 
         top: top, 
@@ -21,17 +44,14 @@ const calculateBounds = (id, x, y, h, w) => {
     }
 }
 
-const preparePiece = (id, x, y, h, w, axis, color, coordHandler) => {
+const preparePiece = (id, x, y, h, w, allPieces, axis, color, coordHandler) => {
     let xPos = x * SIZE_MOD;
     let yPos = y * SIZE_MOD;
     let height = h * SIZE_MOD;
     let width = w * SIZE_MOD;
-
-    let bounds = calculateBounds(id, x, y, h, w)
-    console.log(bounds)
-
+    
     return (
-        <Draggable axis={axis} bounds={calculateBounds(id, xPos, yPos, height, width)} onStop={coordHandler}>
+        <Draggable axis={axis} bounds={calculateBounds(id, x, y, h, w, allPieces, axis)} onStop={coordHandler}>
             <div id={id} style={{
                 position:'absolute', 
                 left:`${xPos}%`, 
@@ -119,8 +139,8 @@ const Piece = props => {
     }
 
     let currPiece = props.pieceProps.orientation == 'HORIZONTAL' 
-        ? preparePiece(props.pieceProps.id, currX, currY, 1, props.pieceProps.size, 'x', props.pieceProps.color, passNewBinToParent)
-        : preparePiece(props.pieceProps.id, currX, currY, props.pieceProps.size, 1, 'y', props.pieceProps.color, passNewBinToParent);
+        ? preparePiece(props.pieceProps.id, currX, currY, 1, props.pieceProps.size, props.allPieces, 'x', props.pieceProps.color, passNewBinToParent)
+        : preparePiece(props.pieceProps.id, currX, currY, props.pieceProps.size, 1, props.allPieces, 'y', props.pieceProps.color, passNewBinToParent);
 
     return currPiece;
 }

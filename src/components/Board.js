@@ -8,7 +8,8 @@ const TEST_PUZZLE = {
     pieces: [
         {id:0, x:0, y:0, size:2, orientation: 'HORIZONTAL', color:'red'},
         {id:1, x:0, y:1, size:2, orientation: 'VERTICAL', color:'pink'},
-        {id:2, x:3, y:5, size:3, orientation: 'HORIZONTAL', color:'blue'}
+        {id:2, x:3, y:5, size:3, orientation: 'HORIZONTAL', color:'blue'},
+        {id:3, x:5, y:0, size:1, orientation: 'HORIZONTAL', color:'green'}
     ]
 };
 
@@ -26,19 +27,21 @@ const Board = () => {
         )
     }
 
-    const updatePiecesOnBoard = (id, newBin, orientation) => {
+    const updatePiecesOnBoard = (id, newBin) => {
         setPiecesOnBoard((prevState) => {
             let newState = prevState;
 
             newState.forEach(element => {
                 if (element.id === id) {
-                    if (orientation == 'HORIZONTAL') {
+                    if (element.orientation == 'HORIZONTAL') {
                         element.x = newBin;
-                    } else {
+                    } else if (element.orientation == 'VERTICAL') {
                         element.y = newBin;
                     }
                 }
             })
+
+            console.log(newState)
 
             return newState;
         })
@@ -47,6 +50,8 @@ const Board = () => {
     const [piecesOnBoard, setPiecesOnBoard] = useState(TEST_PUZZLE.pieces);
 
     useEffect(() => {setIsMounted(true)})
+
+    console.log(isMounted);
 
     return (
         <div id='main-board' className='board'>
