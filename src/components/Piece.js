@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Draggable from 'react-draggable';
 
 const BOARD_SIZE = 6;
@@ -13,7 +13,7 @@ const calculateBoundsFromOtherPiece = (parentBound, currPos, otherPos, otherSize
 
 }
 
-const calculateBounds = (id, x, y, h, w, allPieces, axis) => {
+const calculateInitialBounds = (id, x, y, h, w, allPieces, axis) => {
     let boardBoundingRect = document.getElementById('main-board').getBoundingClientRect();
     let tileSize = boardBoundingRect.width / BOARD_SIZE;
 
@@ -44,14 +44,52 @@ const calculateBounds = (id, x, y, h, w, allPieces, axis) => {
     }
 }
 
-const preparePiece = (id, x, y, h, w, allPieces, axis, color, coordHandler) => {
+const calculateNewBounds = (id, x, y, h, w, allPieces, axis) => {
+    let boardBoundingRect = document.getElementById('main-board').getBoundingClientRect();
+    let currElement = document.getElementById(id);
+    let tileSize = boardBoundingRect.width / BOARD_SIZE;
+
+    let left = parseInt(0 - currElement.offsetLeft);
+    let top = parseInt(0 - currElement.offsetTop);
+    let right = parseInt(boardBoundingRect.width - ((w * tileSize) + currElement.offsetLeft));
+    let bottom = parseInt(boardBoundingRect.height - ((h * tileSize) + currElement.offsetTop));
+
+    allPieces.forEach(otherPiece => {
+        if (id != otherPiece.id) {
+            let otherElement = document.getElementById(otherPiece.id)
+
+            if (axis == AXIS.x) {
+                if (x >= otherPiece.x && y >= otherPiece.y && y <= otherPiece.y + otherPiece.size) {
+                    left = parseInt(0 - currElement.offsetLeft - (otherElement.offsetLeft + (otherPiece.size * tileSize)))
+                } else if (x <= otherPiece.x && y >= otherPiece.y && y <= otherPiece.y + otherPiece.size) {
+                    right = parseInt(boardBoundingRect.width - ((w * tileSize) + currElement.offsetLeft + (otherPiece.size * tileSize)))
+                }
+            } else if (axis == AXIS.y) {
+
+            }
+        }
+    })
+
+    return {
+        left: left, 
+        top: top, 
+        right: right, 
+        bottom: bottom
+    }
+}
+
+const preparePiece = (id, x, y, h, w, allPieces, axis, color, coordHandler, isMounted) => {
     let xPos = x * SIZE_MOD;
     let yPos = y * SIZE_MOD;
     let height = h * SIZE_MOD;
     let width = w * SIZE_MOD;
-    
+
+    let bounds = isMounted 
+        ? calculateNewBounds(id, x, y, h, w, allPieces, axis)
+        : calculateInitialBounds(id, x, y, h, w, allPieces, axis);
+
     return (
-        <Draggable axis={axis} bounds={calculateBounds(id, x, y, h, w, allPieces, axis)} onStop={coordHandler}>
+        <Draggable axis={axis} bounds={bounds} onStop={coordHandler}>
             <div id={id} style={{
                 position:'absolute', 
                 left:`${xPos}%`, 
@@ -67,6 +105,7 @@ const preparePiece = (id, x, y, h, w, allPieces, axis, color, coordHandler) => {
 const Piece = props => {
     const [currX, setCurrX] = useState(props.pieceProps.x);
     const [currY, setCurrY] = useState(props.pieceProps.y);
+    const [isMounted, setIsMounted] = useState(false);
 
     const passNewBinToParent = () => {
         let currElement = document.getElementById(props.pieceProps.id)
@@ -138,9 +177,11 @@ const Piece = props => {
         }
     }
 
+    useEffect(() => {setIsMounted(true)})
+
     let currPiece = props.pieceProps.orientation == 'HORIZONTAL' 
-        ? preparePiece(props.pieceProps.id, currX, currY, 1, props.pieceProps.size, props.allPieces, 'x', props.pieceProps.color, passNewBinToParent)
-        : preparePiece(props.pieceProps.id, currX, currY, props.pieceProps.size, 1, props.allPieces, 'y', props.pieceProps.color, passNewBinToParent);
+        ? preparePiece(props.pieceProps.id, currX, currY, 1, props.pieceProps.size, props.allPieces, 'x', props.pieceProps.color, passNewBinToParent, isMounted)
+        : preparePiece(props.pieceProps.id, currX, currY, props.pieceProps.size, 1, props.allPieces, 'y', props.pieceProps.color, passNewBinToParent, isMounted);
 
     return currPiece;
 }

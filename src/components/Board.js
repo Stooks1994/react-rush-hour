@@ -15,6 +15,7 @@ const TEST_PUZZLE = {
 
 const Board = () => {
     const [isMounted, setIsMounted] = useState(false);
+    const [piecesOnBoard, setPiecesOnBoard] = useState(TEST_PUZZLE.pieces);
 
     const populateBoardFromPuzzle = puzzlePieces => {
         return puzzlePieces.map(piece => (
@@ -29,7 +30,7 @@ const Board = () => {
 
     const updatePiecesOnBoard = (id, newBin) => {
         setPiecesOnBoard((prevState) => {
-            let newState = prevState;
+            let newState = prevState.slice();
 
             newState.forEach(element => {
                 if (element.id === id) {
@@ -41,17 +42,11 @@ const Board = () => {
                 }
             })
 
-            console.log(newState)
-
             return newState;
         })
     }
 
-    const [piecesOnBoard, setPiecesOnBoard] = useState(TEST_PUZZLE.pieces);
-
     useEffect(() => {setIsMounted(true)})
-
-    console.log(isMounted);
 
     return (
         <div id='main-board' className='board'>
