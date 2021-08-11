@@ -6,12 +6,24 @@ const BOARD_SIZE = 6;
 
 const TEST_PUZZLE = {
     pieces: [
-        {id:0, x:0, y:0, size:2, orientation: 'HORIZONTAL', color:'red'},
-        {id:1, x:0, y:1, size:2, orientation: 'VERTICAL', color:'pink'},
-        {id:2, x:3, y:5, size:3, orientation: 'HORIZONTAL', color:'blue'},
-        {id:3, x:5, y:0, size:1, orientation: 'HORIZONTAL', color:'green'}
+        {id:0, x:0, y:2, h:1, w:2, orientation:'HORIZONTAL', color:'red'},
+        {id:1, x:2, y:0, h:3, w:1, orientation:'VERTICAL', color:'blue'},
+        {id:2, x:0, y:3, h:1, w:3, orientation:'HORIZONTAL', color:'green'},
+        {id:3, x:5, y:3, h:3, w:1, orientation:'VERTICAL', color:'teal'},
+    ]
+}
+
+
+/*
+const TEST_PUZZLE = {
+    pieces: [
+        {id:0, x:0, y:0, h:1, w:2, orientation: 'HORIZONTAL', color:'red'},
+        {id:1, x:0, y:1, h:2, w:1, orientation: 'VERTICAL', color:'pink'},
+        {id:2, x:3, y:5, h:1, w:3, orientation: 'HORIZONTAL', color:'blue'},
+        {id:3, x:5, y:0, h:1, w:1, orientation: 'HORIZONTAL', color:'green'}
     ]
 };
+*/
 
 const Board = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -45,7 +57,7 @@ const Board = () => {
             return newState;
         })
     }
-
+    
     useEffect(() => {setIsMounted(true)})
 
     return (

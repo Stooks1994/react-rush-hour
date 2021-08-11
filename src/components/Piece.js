@@ -9,11 +9,7 @@ const AXIS = {
     y: 'y'
 }
 
-const calculateBoundsFromOtherPiece = (parentBound, currPos, otherPos, otherSize) => {
-
-}
-
-const calculateInitialBounds = (id, x, y, h, w, allPieces, axis) => {
+const calculateBounds = (id, x, y, h, w, allPieces, axis) => {
     let boardBoundingRect = document.getElementById('main-board').getBoundingClientRect();
     let tileSize = boardBoundingRect.width / BOARD_SIZE;
 
@@ -23,52 +19,29 @@ const calculateInitialBounds = (id, x, y, h, w, allPieces, axis) => {
     let bottom = parseInt(boardBoundingRect.height - ((h + y) * tileSize));
     
     allPieces.forEach(otherPiece => {
+        if (id == 0 && otherPiece.id == 1) {
+            console.log('id:0' + ' x:' + x + ' y:' + y + ' h:' + h + ' w:' + w)
+            console.log('id:1' + ' x:' + otherPiece.x + ' y:' + otherPiece.y + ' h:' + otherPiece.h + ' w:' + otherPiece.w)
+        }
+
         if (id != otherPiece.id) {
             if (axis == AXIS.x) {
-                if (x >= otherPiece.x && y >= otherPiece.y && y <= otherPiece.y + otherPiece.size) {
-                    left = parseInt(0 - ((x - (otherPiece.x + otherPiece.size)) * tileSize))
-                } else if (x <= otherPiece.x && y >= otherPiece.y && y <= otherPiece.y + otherPiece.size) {
-                    right = parseInt(boardBoundingRect.width - ((w + x + otherPiece.size) * tileSize))
+                if (x >= otherPiece.x && y >= otherPiece.y && y < otherPiece.y + otherPiece.h) {
+                    left = parseInt(0 - ((x - (otherPiece.x + otherPiece.w)) * tileSize))
+                } else if (x < otherPiece.x && y >= otherPiece.y && y < otherPiece.y + otherPiece.h) {
+                    right = parseInt((otherPiece.x * tileSize) - ((x+ w) * tileSize))
                 }
             } else if (axis == AXIS.y) {
-
+                if (y >= otherPiece.y && x >= otherPiece.x && x < otherPiece.x + otherPiece.w) {
+                    top = parseInt(0 - ((y - (otherPiece.y + otherPiece.h)) * tileSize))
+                } else if (y < otherPiece.y && x >= otherPiece.x && x < otherPiece.x + otherPiece.w) {
+                    bottom = parseInt((otherPiece.y * tileSize) - ((y + h) * tileSize))
+                }
             }
         }
     })
 
-    return {
-        left: left, 
-        top: top, 
-        right: right, 
-        bottom: bottom
-    }
-}
-
-const calculateNewBounds = (id, x, y, h, w, allPieces, axis) => {
-    let boardBoundingRect = document.getElementById('main-board').getBoundingClientRect();
-    let currElement = document.getElementById(id);
-    let tileSize = boardBoundingRect.width / BOARD_SIZE;
-
-    let left = parseInt(0 - currElement.offsetLeft);
-    let top = parseInt(0 - currElement.offsetTop);
-    let right = parseInt(boardBoundingRect.width - ((w * tileSize) + currElement.offsetLeft));
-    let bottom = parseInt(boardBoundingRect.height - ((h * tileSize) + currElement.offsetTop));
-
-    allPieces.forEach(otherPiece => {
-        if (id != otherPiece.id) {
-            let otherElement = document.getElementById(otherPiece.id)
-
-            if (axis == AXIS.x) {
-                if (x >= otherPiece.x && y >= otherPiece.y && y <= otherPiece.y + otherPiece.size) {
-                    left = parseInt(0 - currElement.offsetLeft - (otherElement.offsetLeft + (otherPiece.size * tileSize)))
-                } else if (x <= otherPiece.x && y >= otherPiece.y && y <= otherPiece.y + otherPiece.size) {
-                    right = parseInt(boardBoundingRect.width - ((w * tileSize) + currElement.offsetLeft + (otherPiece.size * tileSize)))
-                }
-            } else if (axis == AXIS.y) {
-
-            }
-        }
-    })
+    console.log(left + " " + top + " " + right + " " + bottom + " " )
 
     return {
         left: left, 
@@ -84,12 +57,10 @@ const preparePiece = (id, x, y, h, w, allPieces, axis, color, coordHandler, isMo
     let height = h * SIZE_MOD;
     let width = w * SIZE_MOD;
 
-    let bounds = isMounted 
-        ? calculateNewBounds(id, x, y, h, w, allPieces, axis)
-        : calculateInitialBounds(id, x, y, h, w, allPieces, axis);
+    let bounds = calculateBounds(id, x, y, h, w, allPieces, axis)
 
     return (
-        <Draggable axis={axis} bounds={bounds} onStop={coordHandler}>
+        <Draggable axis={axis} bounds={bounds} onStop={coordHandler} position={{x:0, y:0}}>
             <div id={id} style={{
                 position:'absolute', 
                 left:`${xPos}%`, 
@@ -112,76 +83,56 @@ const Piece = props => {
 
         let boardPx = document.getElementById('main-board').getBoundingClientRect().width
         let vals = currElement.style.transform.match(/-?[0-9]+/gm)
+        let tileSize = boardPx / BOARD_SIZE;
 
         if (vals.length == 1) {
             // Only has transform in X direction
             let xTransform = Number(vals[0])
             let newOffset = currElement.offsetLeft + xTransform
-            let newBin = boardPx / newOffset
+            let newBin = 0
 
-            switch(Math.trunc(newBin)) {
-                case 0: 
-                    newBin = 5
-                    break;
-                case 1:
-                    newBin = 4
-                    break;
-                case 2:
-                    newBin = 3
-                    break;
-                case 3:
-                    newBin = 2
-                    break;
-                case 4:
-                    newBin = 1
-                    break;
-                case 5:
-                    newBin = 0
-                    break;
-                default:
-                    newBin = 0
+            if (newOffset <= 0.5 * tileSize) {
+                newBin = 0;
+            } else if (newOffset <= 1.5 * tileSize && newOffset > 0.5 * tileSize) {
+                newBin = 1;
+            } else if (newOffset <= 2.5 * tileSize && newOffset > 1.5 * tileSize) {
+                newBin = 2;
+            } else if (newOffset <= 3.5 * tileSize && newOffset > 2.5 * tileSize) {
+                newBin = 3;
+            } else if (newOffset <= 4.5 * tileSize && newOffset > 3.5 * tileSize) {
+                newBin = 4;
+            } else {
+                newBin = 5;
             }
-        
+
             props.onFinishedDragging(props.pieceProps.id, newBin)
         } else {
             // Has transforms for both X and Y directions -- X will be 0
             let yTransform = Number(vals[1])
             let newOffset = currElement.offsetTop + yTransform
+            let newBin = 0
 
-            let newBin = boardPx / newOffset
-
-            switch(Math.trunc(newBin)) {
-                case 0: 
-                    newBin = 5
-                    break;
-                case 1:
-                    newBin = 4
-                    break;
-                case 2:
-                    newBin = 3
-                    break;
-                case 3:
-                    newBin = 2
-                    break;
-                case 4:
-                    newBin = 1
-                    break;
-                case 5:
-                    newBin = 0
-                    break;
-                default:
-                    newBin = 0
+            if (newOffset <= 0.5 * tileSize) {
+                newBin = 0;
+            } else if (newOffset <= 1.5 * tileSize && newOffset > 0.5 * tileSize) {
+                newBin = 1;
+            } else if (newOffset <= 2.5 * tileSize && newOffset > 1.5 * tileSize) {
+                newBin = 2;
+            } else if (newOffset <= 3.5 * tileSize && newOffset > 2.5 * tileSize) {
+                newBin = 3;
+            } else if (newOffset <= 4.5 * tileSize && newOffset > 3.5 * tileSize) {
+                newBin = 4;
+            } else {
+                newBin = 5;
             }
             
             props.onFinishedDragging(props.pieceProps.id, newBin)
         }
     }
 
-    useEffect(() => {setIsMounted(true)})
-
     let currPiece = props.pieceProps.orientation == 'HORIZONTAL' 
-        ? preparePiece(props.pieceProps.id, currX, currY, 1, props.pieceProps.size, props.allPieces, 'x', props.pieceProps.color, passNewBinToParent, isMounted)
-        : preparePiece(props.pieceProps.id, currX, currY, props.pieceProps.size, 1, props.allPieces, 'y', props.pieceProps.color, passNewBinToParent, isMounted);
+        ? preparePiece(props.pieceProps.id, props.pieceProps.x, props.pieceProps.y, props.pieceProps.h, props.pieceProps.w, props.allPieces, 'x', props.pieceProps.color, passNewBinToParent, isMounted)
+        : preparePiece(props.pieceProps.id, props.pieceProps.x, props.pieceProps.y, props.pieceProps.h, props.pieceProps.w, props.allPieces, 'y', props.pieceProps.color, passNewBinToParent, isMounted);
 
     return currPiece;
 }
