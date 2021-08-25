@@ -8,20 +8,6 @@ const Game = () => {
     const [puzzle, setPuzzle] = useState({pieces: []})
     const [isMounted, setIsMounted] = useState(false)
 
-    /*
-    useEffect(() => {
-        axios.get(`http://localhost:8081/getEasyPuzzle`)
-            .then(res => {
-                setPuzzle(res.data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-
-        setIsMounted(true)
-    })
-    */
-
     const setDifficulty = difficulty => {
         switch (difficulty) {
             case "easy":
