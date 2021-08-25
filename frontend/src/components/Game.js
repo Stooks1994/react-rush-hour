@@ -25,7 +25,8 @@ const Game = () => {
     const setDifficulty = difficulty => {
         switch (difficulty) {
             case "easy":
-                axios.get(`http://localhost:8081/getEasyPuzzle`)
+                //axios.get(`http://localhost:8081/getEasyPuzzle`)
+                axios.get(`/api/getEasyPuzzle`)
                 .then(res => {
                     //setPuzzle(res.data)
                     setPuzzle(() => {
@@ -34,7 +35,8 @@ const Game = () => {
                 })
                 break;
             case "medium":
-                axios.get(`http://localhost:8081/getMediumPuzzle`)
+                //axios.get(`http://localhost:8081/getMediumPuzzle`)
+                axios.get(`/api/getMediumPuzzle`)
                 .then(res => {
                     setPuzzle(res.data)
                 })
