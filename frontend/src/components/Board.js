@@ -4,8 +4,7 @@ import '../styling/Board.css'
 
 const BOARD_SIZE = 6;
 
-/*
-const TEST_PUZZLE = {
+const FALLBACK_PUZZLE = {
     pieces: [
         {id:0, x:0, y:2, h:1, w:2, orientation:'HORIZONTAL', color:'red', escapingPiece:true},
         {id:1, x:2, y:0, h:3, w:1, orientation:'VERTICAL', color:'blue', escapingPiece:false},
@@ -13,7 +12,6 @@ const TEST_PUZZLE = {
         {id:3, x:5, y:3, h:3, w:1, orientation:'VERTICAL', color:'teal', escapingPiece:false},
     ]
 }
-*/
 
 const getEscapeSpace = pieces => {
     let escapePiece = pieces.filter(piece => piece.escapingPiece)

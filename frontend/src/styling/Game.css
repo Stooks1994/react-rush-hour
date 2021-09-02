@@ -5,3 +5,13 @@
     align-items: center;
     justify-content: center;
 }
+
+.not-game {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 90%;
+    width: 20%;
+    margin: 15%;
+}

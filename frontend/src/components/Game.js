@@ -6,8 +6,10 @@ import '../styling/Game.css'
 
 const Game = () => {
     const [puzzle, setPuzzle] = useState({pieces: []})
-    const [isMounted, setIsMounted] = useState(false)
+    const [basePuzzle, setBasePuzzle] = useState({pieces: []})
+    const [selectedDifficulty, setSelectedDifficulty] = useState("easy");
 
+    /*
     const setDifficulty = difficulty => {
         switch (difficulty) {
             case "easy":
@@ -29,10 +31,47 @@ const Game = () => {
                 break;
         }
     }
+    */
+
+    const setDifficulty = difficulty => {
+        setSelectedDifficulty(difficulty);
+    }
+
+    const getNewPuzzle = () => {
+        switch (selectedDifficulty) {
+            case "easy":
+                axios.get(`http://localhost:8081/getEasyPuzzle`)
+                //axios.get(`/api/getEasyPuzzle`)
+                .then(res => {
+                    setPuzzle(res.data)
+                    setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
+                })
+                break;
+            case "medium":
+                axios.get(`http://localhost:8081/getMediumPuzzle`)
+                //axios.get(`/api/getMediumPuzzle`)
+                .then(res => {
+                    setPuzzle(res.data)
+                    setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
+                })
+                break;
+        }
+    }
+
+    const resetPuzzle = () => {
+        console.log(basePuzzle)
+        setPuzzle(JSON.parse(JSON.stringify(basePuzzle)));
+    }
 
     return (
         <div className='game'>
-            <Controls onChangeDifficultySelector={setDifficulty}/>
+            <div className='not-game'>
+                <Controls 
+                    onChangeDifficultySelector={setDifficulty}
+                    onGetNewPuzzle={getNewPuzzle}
+                    onResetPuzzle={resetPuzzle}
+                />
+            </div>
             <div className='game'>
                 <Board currPuzzle={puzzle} />   
             </div>
