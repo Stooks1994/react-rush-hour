@@ -61,6 +61,7 @@ const preparePiece = (id, x, y, h, w, allPieces, axis, color, coordHandler) => {
                 height:`${height}%`, 
                 width:`${width}%`, 
                 backgroundColor:`${color}`,
+                borderRadius:'15px'
             }} />
         </Draggable>
     )

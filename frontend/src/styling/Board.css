@@ -5,6 +5,7 @@
     height: 90vh;
     width: 90vh;
     position: absolute;
+    border-radius: 15px;
 }
 
 .board__tbody {
