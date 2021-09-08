@@ -54,7 +54,7 @@ const Game = () => {
                 })
                 break;
             case "hard":
-                axios.get(`http://localhost:8081/getHardPuzzle`)
+                axios.get(`http://localhost:8081/testParse`)
                 //axios.get(`/api/getHardPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);

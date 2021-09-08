@@ -120,9 +120,14 @@ const Piece = props => {
         }
     }
 
-    let currPiece = props.pieceProps.orientation == 'HORIZONTAL' 
-        ? preparePiece(props.pieceProps.id, props.pieceProps.x, props.pieceProps.y, props.pieceProps.h, props.pieceProps.w, props.allPieces, 'x', props.pieceProps.color, passNewBinToParent)
-        : preparePiece(props.pieceProps.id, props.pieceProps.x, props.pieceProps.y, props.pieceProps.h, props.pieceProps.w, props.allPieces, 'y', props.pieceProps.color, passNewBinToParent);
+    var currPiece;
+
+    if (props.pieceProps.w == 1 && props.pieceProps.h == 1) 
+        currPiece = preparePiece(props.pieceProps.id, props.pieceProps.x, props.pieceProps.y, props.pieceProps.h, props.pieceProps.w, props.allPieces, 'none', props.pieceProps.color, passNewBinToParent)
+    else
+        currPiece = props.pieceProps.orientation == 'HORIZONTAL' 
+            ? preparePiece(props.pieceProps.id, props.pieceProps.x, props.pieceProps.y, props.pieceProps.h, props.pieceProps.w, props.allPieces, 'x', props.pieceProps.color, passNewBinToParent)
+            : preparePiece(props.pieceProps.id, props.pieceProps.x, props.pieceProps.y, props.pieceProps.h, props.pieceProps.w, props.allPieces, 'y', props.pieceProps.color, passNewBinToParent);
 
     return currPiece;
 }
