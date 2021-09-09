@@ -38,9 +38,6 @@ const calculateBounds = (id, x, y, h, w, allPieces, axis) => {
                 }
             }
         }
-
-        if (id == 3)
-            console.log(top + " " + left + " " + right + " " + bottom + "\n")
     })
 
     return {
@@ -82,7 +79,13 @@ const Piece = props => {
         let vals = currElement.style.transform.match(/-?[0-9]+/gm)
         let tileSize = boardPx / BOARD_SIZE;
 
-        if (vals.length == 1 && vals[0] != "0") {
+        console.log(boardPx)
+        console.log(vals)
+        console.log(tileSize)
+
+
+        /*if (vals.length == 1 && vals[0] != "0") {*/
+        if (vals[0] != "0") {
             // Only has transform in X direction
             let xTransform = Number(vals[0])
             let newOffset = currElement.offsetLeft + xTransform
@@ -103,7 +106,7 @@ const Piece = props => {
             }
 
             props.onFinishedDragging(props.pieceProps.id, newBin)
-        } else if (vals.length == 2) {
+        } /*else if (vals.length == 2)*/ else if (vals.length == 2 && vals[1] != "0") {
             // Has transforms for both X and Y directions -- X will be 0
             let yTransform = Number(vals[1])
             let newOffset = currElement.offsetTop + yTransform

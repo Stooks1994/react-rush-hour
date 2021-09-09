@@ -62,8 +62,6 @@ const Board = props => {
     
     useEffect(() => {setIsMounted(true)})
 
-    console.log(piecesOnBoard)
-
     if (props.isGameStarted) {
         return (
             <div id='main-board' className='board'>
