@@ -22,18 +22,25 @@ const calculateBounds = (id, x, y, h, w, allPieces, axis) => {
         if (id != otherPiece.id) {
             if (axis == AXIS.x) {
                 if (x >= otherPiece.x && y >= otherPiece.y && y < otherPiece.y + otherPiece.h) {
-                    left = parseInt(0 - ((x - (otherPiece.x + otherPiece.w)) * tileSize))
+                    let potentialBound = parseInt(0 - ((x - (otherPiece.x + otherPiece.w)) * tileSize))
+                    if (potentialBound > left) left = potentialBound
                 } else if (x < otherPiece.x && y >= otherPiece.y && y < otherPiece.y + otherPiece.h) {
-                    right = parseInt((otherPiece.x * tileSize) - ((x + w) * tileSize))
+                    let potentialBound = parseInt((otherPiece.x * tileSize) - ((x + w) * tileSize))
+                    if (potentialBound < right) right = potentialBound
                 }
             } else if (axis == AXIS.y) {
                 if (y >= otherPiece.y && x >= otherPiece.x && x < otherPiece.x + otherPiece.w) {
-                    top = parseInt(0 - ((y - (otherPiece.y + otherPiece.h)) * tileSize))
+                    let potentialBound = parseInt(0 - ((y - (otherPiece.y + otherPiece.h)) * tileSize))
+                    if (potentialBound > top) top = potentialBound
                 } else if (y < otherPiece.y && x >= otherPiece.x && x < otherPiece.x + otherPiece.w) {
-                    bottom = parseInt((otherPiece.y * tileSize) - ((y + h) * tileSize))
+                    let potentialBound = parseInt((otherPiece.y * tileSize) - ((y + h) * tileSize))
+                    if (potentialBound < bottom) bottom = potentialBound
                 }
             }
         }
+
+        if (id == 3)
+            console.log(top + " " + left + " " + right + " " + bottom + "\n")
     })
 
     return {
@@ -61,7 +68,7 @@ const preparePiece = (id, x, y, h, w, allPieces, axis, color, coordHandler) => {
                 height:`${height}%`, 
                 width:`${width}%`, 
                 backgroundColor:`${color}`,
-                borderRadius:'15px'
+                borderRadius:'15px',
             }} />
         </Draggable>
     )

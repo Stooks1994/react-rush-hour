@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	populateDbPuzzlesFromFile()
+
 	fmt.Print("Server running...\n")
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +39,7 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 
-		puzzle := getPuzzleByDifficulty("hard")
+		puzzle := getRandomPuzzleFromStore()
 
 		json.NewEncoder(w).Encode(puzzle)
 	})

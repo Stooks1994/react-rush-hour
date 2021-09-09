@@ -8,6 +8,19 @@
     border-radius: 15px;
 }
 
+.empty-board {
+    background-color: #ccc;
+    border: 5px black;
+    margin: 0;
+    height: 90vh;
+    width: 90vh;
+    position: absolute;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .board__tbody {
     height: 100%;
     width: 100%;

@@ -14,6 +14,12 @@ const getRandomColorCode = escapingPiece => {
     var green = (Math.floor(Math.random() * 255)).toString(16);
     var blue = (Math.floor(Math.random() * 255)).toString(16);
 
+    if (green.length == 1)
+        green = "0" + green;
+        
+    if (blue.length == 1)
+        blue = "0" + blue;
+
     return `#${red}${green}${blue}`;
 }
 
@@ -27,6 +33,7 @@ const Game = () => {
     const [puzzle, setPuzzle] = useState({pieces: []})
     const [basePuzzle, setBasePuzzle] = useState({pieces: []})
     const [selectedDifficulty, setSelectedDifficulty] = useState("easy");
+    const [gameStarted, setGameStarted] = useState(false);
 
     const setDifficulty = difficulty => {
         setSelectedDifficulty(difficulty);
@@ -35,18 +42,17 @@ const Game = () => {
     const getNewPuzzle = () => {
         switch (selectedDifficulty) {
             case "easy":
-                axios.get(`http://localhost:8081/getEasyPuzzle`)
-                //axios.get(`/api/getEasyPuzzle`)
+                //axios.get(`http://localhost:8081/getEasyPuzzle`)
+                axios.get(`/api/getEasyPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);
                     setPuzzle(res.data)
                     setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
-                    //console.log(res.data);
                 })
                 break;
             case "medium":
-                axios.get(`http://localhost:8081/getMediumPuzzle`)
-                //axios.get(`/api/getMediumPuzzle`)
+                //axios.get(`http://localhost:8081/getMediumPuzzle`)
+                axios.get(`/api/getMediumPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);
                     setPuzzle(res.data)
@@ -54,8 +60,8 @@ const Game = () => {
                 })
                 break;
             case "hard":
-                axios.get(`http://localhost:8081/testParse`)
-                //axios.get(`/api/getHardPuzzle`)
+                //axios.get(`http://localhost:8081/getHardPuzzle`)
+                axios.get(`/api/getHardPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);
                     setPuzzle(res.data)
@@ -63,6 +69,8 @@ const Game = () => {
                 })
                 break;
         }
+
+        setGameStarted(true);
     }
 
     const resetPuzzle = () => {
@@ -81,7 +89,7 @@ const Game = () => {
                 />
             </div>
             <div className='game'>
-                <Board currPuzzle={puzzle} />   
+                <Board currPuzzle={puzzle} isGameStarted={gameStarted} />   
             </div>
         </div>
     )

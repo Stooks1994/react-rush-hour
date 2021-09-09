@@ -62,11 +62,21 @@ const Board = props => {
     
     useEffect(() => {setIsMounted(true)})
 
-    return (
-        <div id='main-board' className='board'>
-            {isMounted && populateBoardFromPuzzle(piecesOnBoard)}
-        </div>
-    )
+    console.log(piecesOnBoard)
+
+    if (props.isGameStarted) {
+        return (
+            <div id='main-board' className='board'>
+                {isMounted && populateBoardFromPuzzle(piecesOnBoard)}
+            </div>
+        )
+    } else {
+        return (
+            <div id='main-board' className='empty-board'>
+                Select a difficulty and click New Puzzle to get started.
+            </div>  
+        )
+    }
 }
 
 export default Board
