@@ -43,8 +43,8 @@ const Game = () => {
     const getNewPuzzle = () => {
         switch (selectedDifficulty) {
             case "easy":
-                axios.get(`http://localhost:8081/api/getEasyPuzzle`)
-                //axios.get(`/api/getEasyPuzzle`)
+                //axios.get(`http://localhost:8081/api/getEasyPuzzle`)
+                axios.get(`/api/getEasyPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);
                     setPuzzle(res.data)
@@ -52,8 +52,8 @@ const Game = () => {
                 })
                 break;
             case "medium":
-                axios.get(`http://localhost:8081/api/getMediumPuzzle`)
-                //axios.get(`/api/getMediumPuzzle`)
+                //axios.get(`http://localhost:8081/api/getMediumPuzzle`)
+                axios.get(`/api/getMediumPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);
                     setPuzzle(res.data)
@@ -61,8 +61,8 @@ const Game = () => {
                 })
                 break;
             case "hard":
-                axios.get(`http://localhost:8081/api/getHardPuzzle`)
-                //axios.get(`/api/getHardPuzzle`)
+                //axios.get(`http://localhost:8081/api/getHardPuzzle`)
+                axios.get(`/api/getHardPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);
                     setPuzzle(res.data)
