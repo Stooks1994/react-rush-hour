@@ -1,0 +1,35 @@
+.left-arrow {
+    width: 33%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.counter {
+    width: 33%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-arrow {
+    width: 33%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation {
+    display: flex;
+    align-self: end;
+    justify-content: center;
+    flex-direction: row;
+    width: 85vh;
+    height: 6vh;
+    background-color: #ccc;
+    margin: 2vh;
+    border-radius: 15px;
+}

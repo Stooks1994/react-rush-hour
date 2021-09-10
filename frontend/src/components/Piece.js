@@ -79,14 +79,7 @@ const Piece = props => {
         let vals = currElement.style.transform.match(/-?[0-9]+/gm)
         let tileSize = boardPx / BOARD_SIZE;
 
-        console.log(boardPx)
-        console.log(vals)
-        console.log(tileSize)
-
-
-        /*if (vals.length == 1 && vals[0] != "0") {*/
         if (vals[0] != "0") {
-            // Only has transform in X direction
             let xTransform = Number(vals[0])
             let newOffset = currElement.offsetLeft + xTransform
             let newBin = 0
@@ -106,8 +99,7 @@ const Piece = props => {
             }
 
             props.onFinishedDragging(props.pieceProps.id, newBin)
-        } /*else if (vals.length == 2)*/ else if (vals.length == 2 && vals[1] != "0") {
-            // Has transforms for both X and Y directions -- X will be 0
+        } else if (vals.length == 2 && vals[1] != "0") {
             let yTransform = Number(vals[1])
             let newOffset = currElement.offsetTop + yTransform
             let newBin = 0

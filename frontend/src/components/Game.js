@@ -3,6 +3,7 @@ import axios from 'axios'
 import Board from './Board'
 import Controls from './Controls'
 import Info from './Info'
+import Navigation from './Navigation'
 import '../styling/Game.css'
 
 const getRandomColorCode = escapingPiece => {
@@ -42,7 +43,7 @@ const Game = () => {
     const getNewPuzzle = () => {
         switch (selectedDifficulty) {
             case "easy":
-                axios.get(`http://localhost:8081/getEasyPuzzle`)
+                axios.get(`http://localhost:8081/api/getEasyPuzzle`)
                 //axios.get(`/api/getEasyPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);
@@ -51,7 +52,7 @@ const Game = () => {
                 })
                 break;
             case "medium":
-                axios.get(`http://localhost:8081/getMediumPuzzle`)
+                axios.get(`http://localhost:8081/api/getMediumPuzzle`)
                 //axios.get(`/api/getMediumPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);
@@ -60,7 +61,7 @@ const Game = () => {
                 })
                 break;
             case "hard":
-                axios.get(`http://localhost:8081/getHardPuzzle`)
+                axios.get(`http://localhost:8081/api/getHardPuzzle`)
                 //axios.get(`/api/getHardPuzzle`)
                 .then(res => {
                     setRandomColorCodesForPieces(res.data);
@@ -88,7 +89,10 @@ const Game = () => {
                 />
             </div>
             <div className='game'>
-                <Board currPuzzle={puzzle} isGameStarted={gameStarted} />   
+                <Board 
+                    currPuzzle={puzzle} 
+                    isGameStarted={gameStarted} 
+                />
             </div>
         </div>
     )

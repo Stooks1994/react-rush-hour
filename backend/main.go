@@ -17,7 +17,7 @@ func main() {
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 	})
 
-	http.HandleFunc("/getEasyPuzzle", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/getEasyPuzzle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 
@@ -26,7 +26,7 @@ func main() {
 		json.NewEncoder(w).Encode(puzzle)
 	})
 
-	http.HandleFunc("/getMediumPuzzle", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/getMediumPuzzle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 
@@ -35,7 +35,7 @@ func main() {
 		json.NewEncoder(w).Encode(puzzle)
 	})
 
-	http.HandleFunc("/getHardPuzzle", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/getHardPuzzle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 

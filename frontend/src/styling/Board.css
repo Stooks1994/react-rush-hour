@@ -2,23 +2,26 @@
     background-color: #ccc;
     border: 5px black;
     margin: 0;
-    height: 90vh;
-    width: 90vh;
+    height: 85vh;
+    width: 85vh;
     position: absolute;
     border-radius: 15px;
+    align-self: flex-start;
+    margin-top: 5vh;
 }
 
 .empty-board {
     background-color: #ccc;
     border: 5px black;
-    margin: 0;
-    height: 90vh;
-    width: 90vh;
+    margin-top: 5vh;
+    height: 85vh;
+    width: 85vh;
     position: absolute;
     border-radius: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
+    align-self: flex-start;
 }
 
 .board__tbody {
