@@ -36,6 +36,21 @@ const Game = () => {
     const [selectedDifficulty, setSelectedDifficulty] = useState("easy");
     const [gameStarted, setGameStarted] = useState(false);
 
+    const prepFallBack = () => {
+        let fallback = {
+            pieces: [
+                {id:0, x:0, y:2, h:1, w:2, orientation:'HORIZONTAL', color:'red', escapingPiece:true},
+                {id:1, x:2, y:0, h:3, w:1, orientation:'VERTICAL', color:'blue', escapingPiece:false},
+                {id:2, x:0, y:3, h:1, w:3, orientation:'HORIZONTAL', color:'green', escapingPiece:false},
+                {id:3, x:5, y:3, h:3, w:1, orientation:'VERTICAL', color:'teal', escapingPiece:false},
+            ]
+        }
+    
+        setRandomColorCodesForPieces(fallback)
+        setPuzzle(fallback)
+        setBasePuzzle(fallback)
+    }
+
     const setDifficulty = difficulty => {
         setSelectedDifficulty(difficulty);
     }
@@ -50,6 +65,10 @@ const Game = () => {
                     setPuzzle(res.data)
                     setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
                 })
+                .catch(err => {
+                    console.log(err);
+                    prepFallBack();
+                })
                 break;
             case "medium":
                 //axios.get(`http://localhost:8081/api/getMediumPuzzle`)
@@ -59,6 +78,10 @@ const Game = () => {
                     setPuzzle(res.data)
                     setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
                 })
+                .catch(err => {
+                    console.log(err);
+                    prepFallBack();
+                })
                 break;
             case "hard":
                 //axios.get(`http://localhost:8081/api/getHardPuzzle`)
@@ -67,6 +90,10 @@ const Game = () => {
                     setRandomColorCodesForPieces(res.data);
                     setPuzzle(res.data)
                     setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
+                })
+                .catch(err => {
+                    console.log(err);
+                    prepFallBack();
                 })
                 break;
         }

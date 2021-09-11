@@ -2,7 +2,7 @@ import '../styling/Info.css'
 
 const Info = props => {
     const infoString = `Get the red block to the end of its row\n   - Pieces move along a single axis\n   - 1x1 blocks are stationary`;
-
+    
     return (
         <div className='info'>
             <div className='info-row'><h1>RUSH HOUR</h1></div>

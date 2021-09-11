@@ -6,27 +6,31 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 )
 
+var easyThreshold int = 38
+var mediumThreshold int = 48
+
+var easyPuzzles = []string{}
+var mediumPuzzles = []string{}
+var hardPuzzles = []string{}
+
 func getPuzzleByDifficulty(difficulty string) Puzzle {
-	puzzle := easyPuzzles[0]
+	var puzzle Puzzle
 
 	switch difficulty {
 	case "easy":
-		puzzle = easyPuzzles[0]
+		index := rand.Intn(len(easyPuzzles))
+		puzzle = parsePuzzleStringToJSON(easyPuzzles[index])
 	case "medium":
-		puzzle = mediumPuzzles[0]
+		index := rand.Intn(len(mediumPuzzles))
+		puzzle = parsePuzzleStringToJSON(mediumPuzzles[index])
 	case "hard":
-		puzzle = easyPuzzles[0]
+		index := rand.Intn(len(hardPuzzles))
+		puzzle = parsePuzzleStringToJSON(hardPuzzles[index])
 	}
-
-	return puzzle
-}
-
-func getRandomPuzzleFromStore() Puzzle {
-	index := rand.Intn(len(dbPuzzleStrings))
-	puzzle := parsePuzzleStringToJSON(dbPuzzleStrings[index])
 
 	return puzzle
 }
@@ -46,7 +50,20 @@ func populateDbPuzzlesFromFile() {
 
 	for scanner.Scan() {
 		splitString := strings.Split(scanner.Text(), " ")
-		dbPuzzleStrings = append(dbPuzzleStrings, splitString[1])
+
+		val, e := strconv.Atoi(splitString[0])
+
+		if e != nil {
+			log.Fatal(err)
+		}
+
+		if val <= easyThreshold {
+			easyPuzzles = append(easyPuzzles, splitString[1])
+		} else if val <= mediumThreshold {
+			mediumPuzzles = append(mediumPuzzles, splitString[1])
+		} else {
+			hardPuzzles = append(hardPuzzles, splitString[1])
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -54,6 +71,7 @@ func populateDbPuzzlesFromFile() {
 	}
 }
 
+/*
 var easyPuzzles = []Puzzle{
 	{
 		Id:         0,
@@ -85,3 +103,4 @@ var mediumPuzzles = []Puzzle{
 }
 
 var dbPuzzleStrings = []string{}
+*/

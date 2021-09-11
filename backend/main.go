@@ -39,7 +39,7 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 
-		puzzle := getRandomPuzzleFromStore()
+		puzzle := getPuzzleByDifficulty("hard")
 
 		json.NewEncoder(w).Encode(puzzle)
 	})

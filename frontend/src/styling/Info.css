@@ -12,10 +12,12 @@
 
 .info-row {
     height: 33%;
+    width: 0 0 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     white-space: pre;
+    flex-wrap: nowrap;
 }
 
 a {

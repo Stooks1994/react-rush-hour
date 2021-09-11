@@ -2,17 +2,6 @@ import React, { useState, useEffect } from "react"
 import Piece from "./Piece";
 import '../styling/Board.css'
 
-const BOARD_SIZE = 6;
-
-const FALLBACK_PUZZLE = {
-    pieces: [
-        {id:0, x:0, y:2, h:1, w:2, orientation:'HORIZONTAL', color:'red', escapingPiece:true},
-        {id:1, x:2, y:0, h:3, w:1, orientation:'VERTICAL', color:'blue', escapingPiece:false},
-        {id:2, x:0, y:3, h:1, w:3, orientation:'HORIZONTAL', color:'green', escapingPiece:false},
-        {id:3, x:5, y:3, h:3, w:1, orientation:'VERTICAL', color:'teal', escapingPiece:false},
-    ]
-}
-
 const getEscapeSpace = pieces => {
     let escapePiece = pieces.filter(piece => piece.escapingPiece)
     return escapePiece[0]
@@ -71,7 +60,9 @@ const Board = props => {
     } else {
         return (
             <div id='main-board' className='empty-board'>
-                Select a difficulty and click New Puzzle to get started.
+                <div>Select a difficulty and click New Puzzle to get started.</div>
+                <div>&nbsp;</div>
+                <div>Difficulty based on number of moves to complete.</div>
             </div>  
         )
     }
