@@ -17,38 +17,11 @@ func main() {
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 	})
 
-	http.HandleFunc("/api/getEasyPuzzle", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/getPuzzle", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 
-		puzzle := getPuzzleByDifficulty("easy")
-
-		json.NewEncoder(w).Encode(puzzle)
-	})
-
-	http.HandleFunc("/api/getMediumPuzzle", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-
-		puzzle := getPuzzleByDifficulty("medium")
-
-		json.NewEncoder(w).Encode(puzzle)
-	})
-
-	http.HandleFunc("/api/getHardPuzzle", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-
-		puzzle := getPuzzleByDifficulty("hard")
-
-		json.NewEncoder(w).Encode(puzzle)
-	})
-
-	http.HandleFunc("/testParse", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-
-		puzzle := parsePuzzleStringToJSON("IBBxooIooLDDJAALooJoKEEMFFKooMGGHHHM")
+		puzzle := getRandomPuzzle()
 
 		json.NewEncoder(w).Encode(puzzle)
 	})

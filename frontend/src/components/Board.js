@@ -60,9 +60,7 @@ const Board = props => {
     } else {
         return (
             <div id='main-board' className='empty-board'>
-                <div>Select a difficulty and click New Puzzle to get started.</div>
-                <div>&nbsp;</div>
-                <div>Difficulty based on number of moves to complete.</div>
+                <div>Click the New Puzzle button to get started</div>
             </div>  
         )
     }

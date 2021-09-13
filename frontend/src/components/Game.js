@@ -3,6 +3,7 @@ import axios from 'axios'
 import Board from './Board'
 import Controls from './Controls'
 import Info from './Info'
+import NavBar from './NavBar'
 import Navigation from './Navigation'
 import '../styling/Game.css'
 
@@ -55,48 +56,18 @@ const Game = () => {
         setSelectedDifficulty(difficulty);
     }
 
-    const getNewPuzzle = () => {
-        switch (selectedDifficulty) {
-            case "easy":
-                //axios.get(`http://localhost:8081/api/getEasyPuzzle`)
-                axios.get(`/api/getEasyPuzzle`)
-                .then(res => {
-                    setRandomColorCodesForPieces(res.data);
-                    setPuzzle(res.data)
-                    setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
-                })
-                .catch(err => {
-                    console.log(err);
-                    prepFallBack();
-                })
-                break;
-            case "medium":
-                //axios.get(`http://localhost:8081/api/getMediumPuzzle`)
-                axios.get(`/api/getMediumPuzzle`)
-                .then(res => {
-                    setRandomColorCodesForPieces(res.data);
-                    setPuzzle(res.data)
-                    setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
-                })
-                .catch(err => {
-                    console.log(err);
-                    prepFallBack();
-                })
-                break;
-            case "hard":
-                //axios.get(`http://localhost:8081/api/getHardPuzzle`)
-                axios.get(`/api/getHardPuzzle`)
-                .then(res => {
-                    setRandomColorCodesForPieces(res.data);
-                    setPuzzle(res.data)
-                    setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
-                })
-                .catch(err => {
-                    console.log(err);
-                    prepFallBack();
-                })
-                break;
-        }
+    function getNewPuzzle() {
+        //axios.get(`http://localhost:8081/api/getPuzzle`)
+        axios.get(`/api/getPuzzle`)
+        .then(res => {
+            setRandomColorCodesForPieces(res.data);
+            setPuzzle(res.data)
+            setBasePuzzle(JSON.parse(JSON.stringify(res.data)))
+        })
+        .catch(err => {
+            console.log(err);
+            prepFallBack();
+        })
 
         setGameStarted(true);
     }
@@ -107,20 +78,14 @@ const Game = () => {
 
     return (
         <div className='game'>
-            <div className='not-game'>
-                <Info />
-                <Controls 
-                    onChangeDifficultySelector={setDifficulty}
-                    onGetNewPuzzle={getNewPuzzle}
-                    onResetPuzzle={resetPuzzle}
-                />
-            </div>
-            <div className='game'>
-                <Board 
-                    currPuzzle={puzzle} 
-                    isGameStarted={gameStarted} 
-                />
-            </div>
+            <Controls 
+                onGetNewPuzzle={getNewPuzzle}
+                onResetPuzzle={resetPuzzle}
+            />
+            <Board 
+                currPuzzle={puzzle} 
+                isGameStarted={gameStarted} 
+            />
         </div>
     )
 }

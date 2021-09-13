@@ -1,27 +1,23 @@
 .board {
-    background-color: #ccc;
-    border: 5px black;
-    margin: 0;
-    height: 85vh;
-    width: 85vh;
-    position: absolute;
-    border-radius: 15px;
-    align-self: flex-start;
-    margin-top: 5vh;
-}
-
-.empty-board {
-    background-color: #ccc;
-    border: 5px black;
-    margin-top: 5vh;
-    height: 85vh;
-    width: 85vh;
-    position: absolute;
-    border-radius: 15px;
+    background-color: #E0C097;
+    height: 80vh;
+    width: 80vh;
+    border-radius: 5px;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    align-self: flex-start;
+    flex-direction: column;
+}
+
+.empty-board {
+    background-color: #E0C097;
+    height: 80vh;
+    width: 80vh;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
 }
 

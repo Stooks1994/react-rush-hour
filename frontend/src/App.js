@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import Draggable from 'react-draggable'
 
-import Game from './components/Game'
+import MainContainer from './components/MainContainer'
 import './styling/App.css'
 
 function App() {
 
     return (
-        <Game></Game>
+        <MainContainer />
     );
 }
 
